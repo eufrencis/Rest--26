@@ -21,6 +21,6 @@ public class ClienteRequestDto {
 
     private String endereco;
 
-    @CPF
+    @CPF(message = "O CPF é inválido")
     private String cpf;
 }
