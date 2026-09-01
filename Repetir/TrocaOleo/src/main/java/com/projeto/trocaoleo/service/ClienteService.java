@@ -42,10 +42,42 @@ public class ClienteService {
     }
 
     public ClienteResponseDto putCliente (Long id, ClienteRequestDto requestDto){
+        ClienteEntity entity = clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        entity.setName(requestDto.getName());
+        entity.setCpf(requestDto.getCpf());
+        entity.setEndereco(requestDto.getEndereco());
+        entity.setTelefone(requestDto.getTelefone());
+
+        ClienteEntity entitySalva = clienteRepository.save(entity);
+
+        return clienteMapper.toResponse(entitySalva);
     }
 
+    public ClienteResponseDto patchCliente (Long id, ClienteRequestDto requestDto){
+        ClienteEntity entity = clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+
+        if (requestDto.getName() != null){
+            entity.setName(requestDto.getName());
+        }
+
+        if (requestDto.getCpf() != null){
+            entity.setCpf(requestDto.getCpf());
+        }
+
+        if (requestDto.getEndereco() != null){
+            entity.setEndereco(requestDto.getEndereco());
+        }
+
+        if (requestDto.getTelefone() != null){
+            entity.setEndereco(requestDto.getEndereco());
+        }
+
+        ClienteEntity entitySalva = clienteRepository.save(entity);
+
+        return clienteMapper.toResponse(entitySalva);
+    }
 
 
 }

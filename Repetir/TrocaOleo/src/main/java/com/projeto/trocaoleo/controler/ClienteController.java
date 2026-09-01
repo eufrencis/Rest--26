@@ -34,6 +34,16 @@ public class ClienteController {
         return service.findById(id);
     }
 
+    @PutMapping("/{id}")
+    public ClienteResponseDto putCliente (@PathVariable Long id, @Valid @RequestBody ClienteRequestDto requestDto){
+        return service.putCliente(id, requestDto);
+    }
+
+    @PatchMapping("/{id}")
+    public ClienteResponseDto patchCliente (@PathVariable Long id, @RequestBody ClienteRequestDto requestDto){
+        return service.patchCliente(id, requestDto);
+    }
+
 
 
 }
