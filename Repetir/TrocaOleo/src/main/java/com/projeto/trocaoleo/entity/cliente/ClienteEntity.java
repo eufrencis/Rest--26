@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.entity;
+package com.projeto.trocaoleo.entity.cliente;
 
 import jakarta.persistence.*;
 import lombok.*;

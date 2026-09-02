@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.dto;
+package com.projeto.trocaoleo.dto.cliente;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

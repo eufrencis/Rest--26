@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.dto;
+package com.projeto.trocaoleo.dto.cliente;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.projeto.trocaoleo.controler;
+package com.projeto.trocaoleo.controler.cliente;
 
-import com.projeto.trocaoleo.dto.ClienteRequestDto;
-import com.projeto.trocaoleo.dto.ClienteResponseDto;
-import com.projeto.trocaoleo.service.ClienteService;
+import com.projeto.trocaoleo.dto.cliente.ClienteRequestDto;
+import com.projeto.trocaoleo.dto.cliente.ClienteResponseDto;
+import com.projeto.trocaoleo.service.cliente.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

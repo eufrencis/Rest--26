@@ -1,10 +1,10 @@
-package com.projeto.trocaoleo.service;
+package com.projeto.trocaoleo.service.cliente;
 
-import com.projeto.trocaoleo.dto.ClienteRequestDto;
-import com.projeto.trocaoleo.dto.ClienteResponseDto;
-import com.projeto.trocaoleo.entity.ClienteEntity;
-import com.projeto.trocaoleo.mapper.ClienteMapper;
-import com.projeto.trocaoleo.repository.ClienteRepository;
+import com.projeto.trocaoleo.dto.cliente.ClienteRequestDto;
+import com.projeto.trocaoleo.dto.cliente.ClienteResponseDto;
+import com.projeto.trocaoleo.entity.cliente.ClienteEntity;
+import com.projeto.trocaoleo.mapper.cliente.ClienteMapper;
+import com.projeto.trocaoleo.repository.cliente.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

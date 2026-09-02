@@ -1,9 +1,9 @@
-package com.projeto.trocaoleo.mapper;
+package com.projeto.trocaoleo.mapper.cliente;
 
 
-import com.projeto.trocaoleo.dto.ClienteRequestDto;
-import com.projeto.trocaoleo.dto.ClienteResponseDto;
-import com.projeto.trocaoleo.entity.ClienteEntity;
+import com.projeto.trocaoleo.dto.cliente.ClienteRequestDto;
+import com.projeto.trocaoleo.dto.cliente.ClienteResponseDto;
+import com.projeto.trocaoleo.entity.cliente.ClienteEntity;
 import org.springframework.stereotype.Component;
 
 @Component
