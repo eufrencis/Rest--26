@@ -26,6 +26,10 @@ public class ClienteEntity {
     @Column(nullable = true)
     private String endereco;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
     @Column(unique = true, nullable = true, length = 14)
     private String cpf;
 }

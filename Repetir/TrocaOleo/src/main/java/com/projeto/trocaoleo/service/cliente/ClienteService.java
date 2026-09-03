@@ -37,7 +37,7 @@ public class ClienteService {
     }
 
     public ClienteResponseDto findById (Long id){
-        ClienteEntity entity = clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ClienteEntity entity = clienteRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return clienteMapper.toResponse(entity);
     }
 

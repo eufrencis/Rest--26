@@ -34,5 +34,21 @@ public class VeiculoController {
         return service.FindAll();
     }
 
+    @PutMapping("/{id}")
+    public VeiculoResponseDto putVeiculo (@PathVariable Long id, @Valid @RequestBody VeiculoRequestDto veiculoRequestDto){
+        return service.putVeiculo(id, veiculoRequestDto);
+    }
+
+    @PatchMapping("/{id}")
+    public VeiculoResponseDto patchVeiculo (@PathVariable Long id, @RequestBody VeiculoRequestDto veiculoRequestDto){
+        return service.patchVeiculo(id, veiculoRequestDto);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public  void delete (@PathVariable Long id){
+        service.delete(id);
+    }
+
 
 }
