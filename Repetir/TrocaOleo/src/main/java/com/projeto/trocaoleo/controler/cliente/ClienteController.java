@@ -45,6 +45,10 @@ public class ClienteController {
         return service.patchCliente(id, requestDto);
     }
 
+    @DeleteMapping("/{id}")
+    public void delete (@PathVariable Long id){
+        service.delete(id);
+    }
 
 
 }

@@ -26,7 +26,7 @@ public class ClienteService {
     }
 
     public List<ClienteResponseDto> findAll (){
-        List<ClienteEntity> entities = clienteRepository.findAll();
+        List<ClienteEntity> entities = clienteRepository.findAllByAtivoTrue();
         List<ClienteResponseDto> clienteResponseDtos = new ArrayList<>();
 
         for (ClienteEntity entity: entities){
@@ -71,12 +71,19 @@ public class ClienteService {
         }
 
         if (requestDto.getTelefone() != null){
-            entity.setEndereco(requestDto.getEndereco());
+            entity.setTelefone(requestDto.getEndereco());
         }
 
         ClienteEntity entitySalva = clienteRepository.save(entity);
 
         return clienteMapper.toResponse(entitySalva);
+    }
+
+    public void delete (Long id){
+
+        ClienteEntity entity = clienteRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        entity.setAtivo(false);
+        clienteRepository.save(entity);
     }
 
 
