@@ -2,6 +2,7 @@ package com.projeto.trocaoleo.mapper.OrdemServico;
 
 import com.projeto.trocaoleo.dto.ordemServico.OrdemServicoRequestDto;
 import com.projeto.trocaoleo.dto.ordemServico.OrdemServicoResponseDto;
+import com.projeto.trocaoleo.dto.ordemServico.OrdemServicoResumida;
 import com.projeto.trocaoleo.entity.ordemServico.OrdemServicoEntity;
 import com.projeto.trocaoleo.mapper.cliente.ClienteMapper;
 import com.projeto.trocaoleo.mapper.veiculo.VeiculoMapper;
@@ -41,6 +42,18 @@ public class OrdemServicoMapper {
                 .formaPagamento(entity.getFormaPagamento())
                 .observacao(entity.getObservacao())
                 .tipoServico(entity.getTipoServico())
+                .build();
+    }
+
+    public OrdemServicoResumida toEntityResumido (OrdemServicoEntity entity){
+        return OrdemServicoResumida.builder()
+                .id(entity.getId())
+                .numeroOsPapel(entity.getNumeroOsPapel())
+                .data(entity.getData())
+                .valorTotal(entity.getValorTotal())
+                .nameCliente(entity.getCliente().getName())
+                .nomeVeiculo(entity.getVeiculo().getModelo())
+                .placaVeiculo(entity.getVeiculo().getPlaca())
                 .build();
     }
 }

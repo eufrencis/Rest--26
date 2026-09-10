@@ -20,6 +20,5 @@ public class VeiculoResponseDto {
     private String placa;
     private String cor;
     private Integer ano;
-    private ClienteResponseDto cliente;
 
 }

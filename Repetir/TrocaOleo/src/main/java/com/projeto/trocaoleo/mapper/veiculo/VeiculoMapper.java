@@ -31,7 +31,7 @@ public class VeiculoMapper {
                 .placa(entity.getPlaca())
                 .ano(entity.getAno())
                 .cor(entity.getCor())
-                .cliente(clienteMapper.toResponse(entity.getCliente()))
                 .build();
     }
+
 }
