@@ -6,6 +6,7 @@ import com.projeto.trocaoleo.enums.TipoServico;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,10 +29,18 @@ public class OrdemServicoEntity {
     @Column(nullable = false)
     private LocalDate data;
 
-    @Column(nullable = false)
-    private Double valorTotal;
+    // precision = 10 (total de dígitos) e scale = 2 (casas decimais)
+    // Permite guardar valores até R$ 99.999.999,99 com centavos exatos
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal valorTotal;
 
-    private Double desconto;
+    // precision = 5 e scale = 2
+    // Permite guardar porcentagens de 0,00% até 999,99% (ex: 10.00 para 10%)
+    @Column(precision = 5, scale = 2)
+    private BigDecimal desconto;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal valorFinalCalculado;
 
     @OneToOne @JoinColumn(name = "cliente_id", nullable = false)
     private ClienteEntity cliente;

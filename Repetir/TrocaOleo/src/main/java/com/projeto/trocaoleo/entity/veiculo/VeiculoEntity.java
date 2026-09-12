@@ -36,4 +36,8 @@ public class VeiculoEntity {
     @JoinColumn(name = "cliente_id", nullable = false)
     private ClienteEntity cliente;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
 }

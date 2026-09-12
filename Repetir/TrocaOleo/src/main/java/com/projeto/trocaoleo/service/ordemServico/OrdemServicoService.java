@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +39,11 @@ public class OrdemServicoService {
         ordemServicoEntity.setVeiculo(veiculoEntity);
         ordemServicoEntity.setCliente(clienteEntity);
 
+        //Atribui o BigDecimal calculado ao campo valorFinal da entidade
+        ordemServicoEntity.setValorFinalCalculado(calcularValorFinal(requestDto));
+
         OrdemServicoEntity ordemServicoEntitySalva = repository.save(ordemServicoEntity);
         return mapper.toResponse(ordemServicoEntitySalva);
-
     }
 
     public OrdemServicoResponseDto findById (Long id){
@@ -68,6 +72,7 @@ public class OrdemServicoService {
         ordemServicoEntity.setData(requestDto.getData());
         ordemServicoEntity.setValorTotal(requestDto.getValorTotal());
         ordemServicoEntity.setDesconto(requestDto.getDesconto());
+        ordemServicoEntity.setValorFinalCalculado(calcularValorFinal(requestDto));
         ordemServicoEntity.setCliente(clienteEntity);
         ordemServicoEntity.setVeiculo(veiculoEntity);
         ordemServicoEntity.setKm(requestDto.getKm());
@@ -120,6 +125,8 @@ public class OrdemServicoService {
             ordemServicoEntity.getTipoServico().addAll(requestDto.getTipoServico());
         }
 
+        ordemServicoEntity.setValorFinalCalculado(calcularValorFinal(requestDto));
+
         OrdemServicoEntity ordemServicoEntitySalva = repository.save(ordemServicoEntity);
 
         return mapper.toResponse(ordemServicoEntitySalva);
@@ -129,6 +136,27 @@ public class OrdemServicoService {
         OrdemServicoEntity entity = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         entity.setAtivo(false);
         repository.save(entity);
+    }
+
+    private BigDecimal calcularValorFinal (OrdemServicoRequestDto requestDto){
+        BigDecimal valorTotal = requestDto.getValorTotal();
+        BigDecimal desconto = requestDto.getDesconto();
+
+        if (desconto == null || desconto.compareTo(BigDecimal.ZERO) == 0){
+            return valorTotal;
+        }
+        // 2. CÁLCULO DO VALOR DO DESCONTO (em R$):
+        // .multiply(desconto): multiplica o valor total pela porcentagem (ex: 150 * 10 = 1500)
+        // .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP):
+        //    - divide por 100 para transformar em porcentagem (ex: 1500 / 100 = 15.00)
+        //    - '2' fixa o resultado em 2 casas decimais (centavos)
+        //    - 'RoundingMode.HALF_UP' faz o arredondamento financeiro padrão (ex: 0.005 vira 0.01)
+        BigDecimal valorDesconto = valorTotal.multiply(desconto).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+
+        return valorTotal.subtract(valorDesconto);
+
+
+
     }
 
 

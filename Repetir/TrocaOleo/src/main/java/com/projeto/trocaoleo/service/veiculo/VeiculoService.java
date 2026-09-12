@@ -36,12 +36,12 @@ public class VeiculoService {
     }
 
     public VeiculoResponseDto findById (Long id){
-        VeiculoEntity entity = veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        VeiculoEntity entity = veiculoRepository.findByIdAndAtivoTrue(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return mapper.toResponse(entity);
     }
 
     public List<VeiculoResponseDto> FindAll (){
-        List<VeiculoEntity> veiculoEntities = veiculoRepository.findAll();
+        List<VeiculoEntity> veiculoEntities = veiculoRepository.findAllByAtivoTrue();
         List<VeiculoResponseDto> veiculoResponseDtos = new ArrayList<>();
 
         for (VeiculoEntity entity: veiculoEntities){

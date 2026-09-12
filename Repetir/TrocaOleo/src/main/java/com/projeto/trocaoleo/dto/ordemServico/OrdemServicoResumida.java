@@ -3,6 +3,7 @@ package com.projeto.trocaoleo.dto.ordemServico;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,7 +18,7 @@ public class OrdemServicoResumida {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate data;
-    private Double valorTotal;
+    private BigDecimal valorFinalCalculado;
     private String nameCliente;
     private String nomeVeiculo;
     private String placaVeiculo;

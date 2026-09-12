@@ -9,6 +9,7 @@ import com.projeto.trocaoleo.enums.TipoServico;
 import lombok.*;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class OrdemServicoResponseDto {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate data;
 
-    private Double valorTotal;
-    private Double desconto;
+    private BigDecimal valorTotal;
+    private BigDecimal desconto;
+    private BigDecimal valorFinalCalculado;
     private ClienteResponseDto cliente;
     private VeiculoResponseDto veiculo;
     private Double km;

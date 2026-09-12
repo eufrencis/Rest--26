@@ -6,8 +6,10 @@ import com.projeto.trocaoleo.entity.veiculo.VeiculoEntity;
 import com.projeto.trocaoleo.enums.TipoServico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,9 +29,11 @@ public class OrdemServicoRequestDto {
     private LocalDate data;
 
     @NotNull
-    private Double valorTotal;
+    @PositiveOrZero(message = "O valor total não pode ser negativo")
+    private BigDecimal valorTotal;
 
-    private Double desconto;
+    @PositiveOrZero(message = "O desconto não pode ser negativo")
+    private BigDecimal desconto;
 
     @NotNull
     private Long clienteId;
