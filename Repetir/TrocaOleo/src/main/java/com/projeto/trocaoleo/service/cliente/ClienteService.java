@@ -8,6 +8,7 @@ import com.projeto.trocaoleo.repository.cliente.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
 
+    @Transactional
     public ClienteResponseDto save (ClienteRequestDto request){
         ClienteEntity entity = clienteMapper.toEntity(request);
         ClienteEntity entitysave = clienteRepository.save(entity);
@@ -41,6 +43,7 @@ public class ClienteService {
         return clienteMapper.toResponse(entity);
     }
 
+    @Transactional
     public ClienteResponseDto putCliente (Long id, ClienteRequestDto requestDto){
         ClienteEntity entity = clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -54,6 +57,7 @@ public class ClienteService {
         return clienteMapper.toResponse(entitySalva);
     }
 
+    @Transactional
     public ClienteResponseDto patchCliente (Long id, ClienteRequestDto requestDto){
         ClienteEntity entity = clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

@@ -10,6 +10,7 @@ import com.projeto.trocaoleo.repository.veiculo.VeiculoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class VeiculoService {
     private final ClienteRepository clienteRepository;
 
 
+    @Transactional
     public VeiculoResponseDto save (VeiculoRequestDto veiculoRequestDto){
         ClienteEntity clienteEntity = clienteRepository.findById(veiculoRequestDto.getClienteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         VeiculoEntity veiculoEntity = mapper.toEntity(veiculoRequestDto);
@@ -48,6 +50,7 @@ public class VeiculoService {
         return veiculoResponseDtos;
     }
 
+    @Transactional
     public VeiculoResponseDto putVeiculo (Long id, VeiculoRequestDto veiculoRequestDto){
 
         VeiculoEntity entity = veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Veiculo não encontrado"));
@@ -65,6 +68,7 @@ public class VeiculoService {
 
     }
 
+    @Transactional
     public VeiculoResponseDto patchVeiculo (Long id, VeiculoRequestDto veiculoRequestDto){
 
         VeiculoEntity veiculoEntity = veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

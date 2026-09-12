@@ -26,6 +26,7 @@ public class ClienteEntity {
     @Column(nullable = true)
     private String endereco;
 
+    // Garante que o Lombok Builder respeite o valor padrão e não defina como null
     @Builder.Default
     @Column(nullable = false)
     private Boolean ativo = true;

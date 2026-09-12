@@ -13,6 +13,7 @@ import com.projeto.trocaoleo.repository.veiculo.VeiculoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class OrdemServicoService {
     private final ClienteRepository clienteRepository;
     private final VeiculoRepository veiculoRepository;
 
-
+    @Transactional //Garante que se algo falhar na criação nada fica salvo pela metade
     public OrdemServicoResponseDto save (OrdemServicoRequestDto requestDto){
         ClienteEntity clienteEntity = clienteRepository.findById(requestDto.getClienteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         VeiculoEntity veiculoEntity = veiculoRepository.findById(requestDto.getVeiculoid()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -42,12 +43,12 @@ public class OrdemServicoService {
     }
 
     public OrdemServicoResponseDto findById (Long id){
-        OrdemServicoEntity entity = repository.findById(id).orElseThrow(() -> new ResponseStatusException (HttpStatus.NOT_FOUND, "Id da ordem de serviço não existe"));
+        OrdemServicoEntity entity = repository.findByIdAndAtivoTrue(id).orElseThrow(() -> new ResponseStatusException (HttpStatus.NOT_FOUND, "Id da ordem de serviço não existe"));
         return mapper.toResponse(entity);
     }
 
     public List<OrdemServicoResumida> findAll (){
-        List<OrdemServicoEntity> entityList = repository.findAll();
+        List<OrdemServicoEntity> entityList = repository.findAllByAtivoTrue();
         List<OrdemServicoResumida> ordemServicoResumidas = new ArrayList<>();
 
         for (OrdemServicoEntity entity : entityList){
@@ -56,11 +57,12 @@ public class OrdemServicoService {
         return ordemServicoResumidas;
     }
 
-    public OrdemServicoResponseDto update (OrdemServicoRequestDto requestDto){
+    @Transactional// Mantém a conexão aberta para o Hibernate executar o .clear() e .addAll()
+    // da coleção sem lançar exceções de lazy loading, além de garantir o rollback se a busca por Cliente ou Veículo falhar.
+    public OrdemServicoResponseDto put (Long id, OrdemServicoRequestDto requestDto){
+        OrdemServicoEntity ordemServicoEntity = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ordem de servico não encontrada"));
         ClienteEntity clienteEntity = clienteRepository.findById(requestDto.getClienteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
         VeiculoEntity veiculoEntity = veiculoRepository.findById(requestDto.getVeiculoid()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado"));
-
-        OrdemServicoEntity ordemServicoEntity = mapper.toEntity(requestDto);
 
         ordemServicoEntity.setNumeroOsPapel(requestDto.getNumeroOsPapel());
         ordemServicoEntity.setData(requestDto.getData());
@@ -71,13 +73,67 @@ public class OrdemServicoService {
         ordemServicoEntity.setKm(requestDto.getKm());
         ordemServicoEntity.setFormaPagamento(requestDto.getFormaPagamento());
         ordemServicoEntity.setObservacao(requestDto.getObservacao());
-        ordemServicoEntity.setTipoServico(requestDto.getTipoServico());
+
+        ordemServicoEntity.getTipoServico().clear();
+        if(requestDto.getTipoServico() != null){
+            ordemServicoEntity.getTipoServico().addAll(requestDto.getTipoServico());
+        }
+        OrdemServicoEntity ordemServicoEntitySalva = repository.save(ordemServicoEntity);
+        return mapper.toResponse(ordemServicoEntitySalva);
+    }
+
+    @Transactional //Garante a integridade transacional ao alterar pontualmente só alguns campos ou coleções da entidade.
+    public OrdemServicoResponseDto patch (Long id, OrdemServicoRequestDto requestDto){
+        OrdemServicoEntity ordemServicoEntity = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (requestDto.getNumeroOsPapel() != null){
+            ordemServicoEntity.setNumeroOsPapel(requestDto.getNumeroOsPapel());
+        }
+        if (requestDto.getData() != null){
+            ordemServicoEntity.setData(requestDto.getData());
+        }
+        if (requestDto.getValorTotal() != null){
+            ordemServicoEntity.setValorTotal(requestDto.getValorTotal());
+        }
+        if (requestDto.getDesconto() != null){
+            ordemServicoEntity.setDesconto(requestDto.getDesconto());
+        }
+        if (requestDto.getClienteId() != null){
+            ClienteEntity clienteEntity = clienteRepository.findById(requestDto.getClienteId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            ordemServicoEntity.setCliente(clienteEntity);
+        }
+        if (requestDto.getVeiculoid() != null){
+            VeiculoEntity veiculoEntity = veiculoRepository.findById(requestDto.getVeiculoid()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            ordemServicoEntity.setVeiculo(veiculoEntity);
+        }
+        if (requestDto.getKm() != null){
+            ordemServicoEntity.setKm(requestDto.getKm());
+        }
+        if (requestDto.getFormaPagamento() != null){
+            ordemServicoEntity.setFormaPagamento(requestDto.getFormaPagamento());
+        }
+        if (requestDto.getObservacao() != null){
+            ordemServicoEntity.setObservacao(requestDto.getObservacao());
+        }
+        if (requestDto.getTipoServico() !=null && !requestDto.getTipoServico().isEmpty()){
+            ordemServicoEntity.getTipoServico().clear();
+            ordemServicoEntity.getTipoServico().addAll(requestDto.getTipoServico());
+        }
 
         OrdemServicoEntity ordemServicoEntitySalva = repository.save(ordemServicoEntity);
 
         return mapper.toResponse(ordemServicoEntitySalva);
-
     }
+
+    public void delete (Long id){
+        OrdemServicoEntity entity = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        entity.setAtivo(false);
+        repository.save(entity);
+    }
+
+
+
+
 
 
 }

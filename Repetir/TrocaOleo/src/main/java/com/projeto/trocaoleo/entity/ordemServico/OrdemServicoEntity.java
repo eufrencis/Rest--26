@@ -60,5 +60,7 @@ public class OrdemServicoEntity {
     @Column(name = "tipo_servico", nullable = false)
     private List<TipoServico> tipoServico;
 
-
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean ativo = true;
 }

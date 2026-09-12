@@ -35,8 +35,21 @@ public class OrdemServicoController {
     }
 
     @PutMapping("/{id}")
-    public OrdemServicoResponseDto update (@Valid @RequestBody OrdemServicoRequestDto ordemServicoRequestDto){
-        return service.update(ordemServicoRequestDto);
+    public OrdemServicoResponseDto put (@PathVariable Long id, @Valid @RequestBody OrdemServicoRequestDto ordemServicoRequestDto){
+        return service.put(id, ordemServicoRequestDto);
+    }
+
+    @PatchMapping("/{id}")
+    public OrdemServicoResponseDto patch (@PathVariable Long id, @RequestBody OrdemServicoRequestDto requestDto){
+        return service.patch(id,requestDto);
+    }
+
+    // Retorna HTTP 204 (No Content) para indicar exclusão bem-sucedida sem corpo na resposta,
+    // economizando largura de banda e seguindo o padrão REST
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete (@PathVariable Long id){
+        service.delete(id);
     }
 
 
