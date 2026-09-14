@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.controler.veiculo;
+package com.projeto.trocaoleo.controller.veiculo;
 
 import com.projeto.trocaoleo.dto.veiculo.VeiculoRequestDto;
 import com.projeto.trocaoleo.dto.veiculo.VeiculoResponseDto;

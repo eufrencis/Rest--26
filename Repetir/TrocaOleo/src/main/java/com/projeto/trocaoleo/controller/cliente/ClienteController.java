@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.controler.cliente;
+package com.projeto.trocaoleo.controller.cliente;
 
 import com.projeto.trocaoleo.dto.cliente.ClienteRequestDto;
 import com.projeto.trocaoleo.dto.cliente.ClienteResponseDto;

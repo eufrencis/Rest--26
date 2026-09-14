@@ -1,4 +1,4 @@
-package com.projeto.trocaoleo.controler.ordemServico;
+package com.projeto.trocaoleo.controller.ordemServico;
 
 import com.projeto.trocaoleo.dto.ordemServico.OrdemServicoRequestDto;
 import com.projeto.trocaoleo.dto.ordemServico.OrdemServicoResponseDto;
